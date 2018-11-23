@@ -90,6 +90,21 @@ func TestGetNonExistentUser(t *testing.T) {
 	}
 }
 
+// Not implemented yet
+func TestCreateUser(t *testing.T) {
+	clearTable()
+}
+
+func TestGetUser(t *testing.T) {
+	clearTable()
+	addUsers(1)
+
+	req, _ := http.NewRequest("GET", "/user/1", nil)
+	response := executeRequest(req)
+
+	checkResponseCode(t, http.StatusOK, response.Code)
+}
+
 
 
 
