@@ -34,3 +34,12 @@ This is my test exercise to get offer from awesome tech company.
 - API check: link to asciinema
 
 or you can tesh it yourself at: http://ip:8000
+
+**Project tasks:**
+- [x] Make tests passed
+- [x] Test REST API working
+- [x] Write comments for code 
+- [ ] Setup CI
+- [x] To issue repository
+- [ ] Host application on remote server
+- [ ] Make screencasts for application
