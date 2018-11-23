@@ -43,3 +43,4 @@ or you can tesh it yourself at: http://ip:8000
 - [x] To issue repository
 - [ ] Host application on remote server
 - [ ] Make screencasts for application
+- [ ] Enable Docker support
