@@ -14,11 +14,13 @@ type user struct {
 	Registered  string `json:"registered"`
 }
 
+// get user
 func (u *user) getUser(db *sql.DB) error {
 	return db.QueryRow("SELECT uuid, username, registered FROM users WHERE id=$1",
 		u.ID).Scan(&u.UUID, &u.Username, &u.Registered)
 }
 
+// update user
 func (u *user) updateUser(db *sql.DB) error {
 	_, err :=
 		db.Exec("UPDATE users SET username=$1 WHERE id=$2",
@@ -27,13 +29,14 @@ func (u *user) updateUser(db *sql.DB) error {
 	return err
 }
 
+// delete user
 func (u *user) deleteUser(db *sql.DB) error {
 	_, err := db.Exec("DELETE FROM users WHERE id=$1", u.ID)
 
 	return err
 }
 
-// need to edit this, UUID must be auto generated.
+// create user
 func (u *user) createUser(db *sql.DB) error {
 	err := db.QueryRow(
 		"INSERT INTO users(uuid, username) VALUES($1, $2) RETURNING id",
@@ -46,6 +49,7 @@ func (u *user) createUser(db *sql.DB) error {
 	return nil
 }
 
+// fetch list of users
 func getUsers(db *sql.DB, start, count int) ([]user, error) {
 	rows, err := db.Query(
 		"SELECT id, uuid, username, registered FROM users LIMIT $1 OFFSET $2",
@@ -70,6 +74,7 @@ func getUsers(db *sql.DB, start, count int) ([]user, error) {
 	return users, nil
 }
 
+// function to generate unique uuid for each user
 func genUuid() string {
 	b := make([]byte, 16)
 	_, err := rand.Read(b)

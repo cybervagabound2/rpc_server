@@ -10,6 +10,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"testing"
+	"rpc_server"
 )
 
 var a main.App
