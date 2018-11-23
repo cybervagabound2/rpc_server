@@ -84,3 +84,21 @@ func (a *App) getUsers(w http.ResponseWriter, r *http.Request) {
 
 	respondWithJSON(w, http.StatusOK, users)
 }
+
+// Create user
+func (a *App) createUser(w http.ResponseWriter, r *http.Request) {
+	var u user
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&u); err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid request userload")
+		return
+	}
+	defer r.Body.Close()
+
+	if err := u.createUser(a.DB); err != nil {
+		respondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	respondWithJSON(w, http.StatusCreated, u)
+}
