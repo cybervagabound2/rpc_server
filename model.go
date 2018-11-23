@@ -34,8 +34,16 @@ func (u *user) deleteUser(db *sql.DB) error {
 	return err
 }
 
-func (u *user) addUser(db *sql.DB) error {
-	return errors.New("Not implemented")
+func (u *user) createUser(db *sql.DB) error {
+	err := db.QueryRow(
+		"INSERT INTO users(uuid, username, registered) VALUES($1, $2, $3) RETURNING id",
+		u.UUID, u.Username, u.Registered).Scan(&u.ID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func getUsers(db *sql.DB, start, count int) ([]user, error) {
