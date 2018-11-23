@@ -29,7 +29,9 @@ func (u *user) updateUser(db *sql.DB) error {
 }
 
 func (u *user) deleteUser(db *sql.DB) error {
-	return errors.New("Not implemented")
+	_, err := db.Exec("DELETE FROM users WHERE id=$1", u.ID)
+
+	return err
 }
 
 func (u *user) addUser(db *sql.DB) error {
