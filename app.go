@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"rpc-server"
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
 )
