@@ -1,12 +1,13 @@
 package main_test
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 	"net/http/httptest"
 	"os"
-	"testing"
 	"rpc_server"
+	"testing"
 )
 
 var a main.App
@@ -73,8 +74,21 @@ func checkResponseCode(t *testing.T, expected, actual int) {
 	}
 }
 
+func TestGetNonExistentUser(t *testing.T) {
+	clearTable()
 
+	req, _ := http.NewRequest("GET", "user/104", nil)
+	response := executeRequest(req)
 
+	checkResponseCode(t, http.StatusNotFound, response.Code)
+
+	var m map[string]string
+	json.Unmarshal(response.Body.Bytes(), &m)
+	if m["error"] != "User not found" {
+		t.Errorf("Expected the 'error' key of the response to be set to 'User not found'. Got '%s'", m["error"])
+
+	}
+}
 
 
 
