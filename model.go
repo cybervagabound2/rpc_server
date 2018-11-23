@@ -9,17 +9,23 @@ import (
 )
 
 type user struct {
+	ID    	    int    `json:"id"`
 	UUID        int	   `json:"uuid"`
 	Username    string `json:"username"`
 	Registered  string `json:"registered"`
 }
 
 func (u *user) getUser(db *sql.DB) error {
-	return errors.New("Not implemented")
+	return db.QueryRow("SELECT uuid, username, registered FROM users WHERE id=$1",
+		u.ID).Scan(&u.UUID, &u.Username, &u.Registered)
 }
 
 func (u *user) updateUser(db *sql.DB) error {
-	return errors.New("Not implemented")
+	_, err :=
+		db.Exec("UPDATE users SET username=$1 WHERE id=$2",
+			u.Username, u.ID)
+
+	return err
 }
 
 func (u *user) deleteUser(db *sql.DB) error {
