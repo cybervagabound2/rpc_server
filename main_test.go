@@ -60,41 +60,6 @@ func TestGetNonExistentUser(t *testing.T) {
 	}
 }
 
-func ensureTableExists() {
-	if _, err := a.DB.Exec(tableCreationQuery); err != nil {
-		log.Fatal(err)
-	}
-}
-
-func clearTable() {
-	a.DB.Exec("DELETE FROM users_test")
-	a.DB.Exec("ALTER SEQUENCE users_pkey_id_seq RESTART WITH 1")
-}
-
-const tableCreationQuery = `CREATE TABLE IF NOT EXISTS users_test
-(
-id SERIAL,
-uuid VARCHAR(36),
-username TEXT NOT NULL,
-registered TIMESTAMP NOT NULL DEFAULT NOW(),
-CONSTRAINT users_test_pkey PRIMARY KEY (id)
-)`
-
-
-func executeRequest(req *http.Request) *httptest.ResponseRecorder {
-	rr := httptest.NewRecorder()
-	a.Router.ServeHTTP(rr, req)
-
-	return rr
-}
-
-func checkResponseCode(t *testing.T, expected, actual int) {
-	if expected != actual {
-		t.Errorf("Expected response code %d. Got %d\n", expected, actual)
-	}
-}
-
-
 // Not implemented yet
 func TestCreateUser(t *testing.T) {
 	clearTable()
@@ -108,28 +73,6 @@ func TestGetUser(t *testing.T) {
 	response := executeRequest(req)
 
 	checkResponseCode(t, http.StatusOK, response.Code)
-}
-
-func addUsers(count int) {
-	if count < 1 {
-		count = 1
-	}
-
-	for i := 0; i < count; i++  {
-		a.DB.Exec("INSERT INTO users_test(uuid, username) VALUES($1, $2)", genUuid(), "user"+strconv.Itoa(i), (i+1) * 10)
-	}
-}
-
-// function to generate uuid for user
-func genUuid() string {
-	b := make([]byte, 16)
-	_, err := rand.Read(b)
-	if err != nil {
-		log.Fatal(err)
-	}
-	uuid := fmt.Sprintf("%x-%x-%x-%x-%x",
-		b[0:4], b[4:6], b[6:8], b[8:10], b[10:])
-	return uuid
 }
 
 // Update user
@@ -180,43 +123,57 @@ func TestDeleteUser(t *testing.T) {
 	checkResponseCode(t, http.StatusNotFound, response.Code)
 }
 
+func executeRequest(req *http.Request) *httptest.ResponseRecorder {
+	rr := httptest.NewRecorder()
+	a.Router.ServeHTTP(rr, req)
 
+	return rr
+}
 
+func checkResponseCode(t *testing.T, expected, actual int) {
+	if expected != actual {
+		t.Errorf("Expected response code %d. Got %d\n", expected, actual)
+	}
+}
 
+func ensureTableExists() {
+	if _, err := a.DB.Exec(tableCreationQuery); err != nil {
+		log.Fatal(err)
+	}
+}
 
+func clearTable() {
+	a.DB.Exec("DELETE FROM users_test")
+	a.DB.Exec("ALTER SEQUENCE users_pkey_id_seq RESTART WITH 1")
+}
 
+func addUsers(count int) {
+	if count < 1 {
+		count = 1
+	}
 
+	for i := 0; i < count; i++  {
+		a.DB.Exec("INSERT INTO users_test(uuid, username) VALUES($1, $2)", genUuid(), "user"+strconv.Itoa(i), (i+1) * 10)
+	}
+}
 
+const tableCreationQuery = `CREATE TABLE IF NOT EXISTS users_test
+(
+id SERIAL,
+uuid VARCHAR(36),
+username TEXT NOT NULL,
+registered TIMESTAMP NOT NULL DEFAULT NOW(),
+CONSTRAINT users_test_pkey PRIMARY KEY (id)
+)`
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// function to generate uuid for user
+func genUuid() string {
+	b := make([]byte, 16)
+	_, err := rand.Read(b)
+	if err != nil {
+		log.Fatal(err)
+	}
+	uuid := fmt.Sprintf("%x-%x-%x-%x-%x",
+		b[0:4], b[4:6], b[6:8], b[8:10], b[10:])
+	return uuid
+}
