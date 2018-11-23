@@ -11,7 +11,8 @@ func main() {
 		os.Getenv("APP_DB_USERNAME"),
 		os.Getenv("APP_DB_PASSWORD"),
 		os.Getenv("APP_DB_NAME"))
-	fmt.Print("                                       \n" +
+	fmt.Print(
+		" Буду работать и развиваться 24/7     \n" +
 		"                                       \n" +
 		"                     ,////             \n" +
 		"                  ///////////.         \n" +
