@@ -174,7 +174,7 @@ func addUsers(count int) {
 	}
 }
 
-const tableCreationQuery = `CREATE TABLE IF NOT EXISTS users_test
+const tableCreationQuery = `CREATE TABLE IF NOT EXISTS users
 (
 id SERIAL,
 uuid VARCHAR(36),
