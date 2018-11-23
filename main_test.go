@@ -1,12 +1,15 @@
 package main_test
 
 import (
+	"crypto/rand"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"rpc_server"
+	"strconv"
 	"testing"
 )
 
@@ -105,9 +108,27 @@ func TestGetUser(t *testing.T) {
 	checkResponseCode(t, http.StatusOK, response.Code)
 }
 
+func addUsers(count int) {
+	if count < 1 {
+		count = 1
+	}
 
+	for i := 0; i < count; i++  {
+		a.DB.Exec("INSERT INTO users_test(uuid, username) VALUES($1, $2)", genUuid(), "user"+strconv.Itoa(i), (i+1) * 10)
+	}
+}
 
-
+// function to generate uuid for user
+func genUuid() string {
+	b := make([]byte, 16)
+	_, err := rand.Read(b)
+	if err != nil {
+		log.Fatal(err)
+	}
+	uuid := fmt.Sprintf("%x-%x-%x-%x-%x",
+		b[0:4], b[4:6], b[6:8], b[8:10], b[10:])
+	return uuid
+}
 
 
 
