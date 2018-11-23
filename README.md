@@ -31,9 +31,7 @@ This is my test exercise to get offer from awesome tech company.
 
 **Application info:**
 - `go test -v` results: https://asciinema.org/a/ibMzb02oVDVTKV4gzXuuHSq1m
-- API check: link to asciinema
-
-or you can tesh it yourself at: http://ip:8000
+- API check: https://asciinema.org/a/OlzoWwRpqKP7swu6UROClY5eT
 
 **Project tasks:**
 - [x] Make tests passed
@@ -42,6 +40,6 @@ or you can tesh it yourself at: http://ip:8000
 - [ ] Setup CI
 - [x] To issue repository
 - [ ] Host application on remote server
-- [ ] Make screencasts for application
+- [x] Make screencasts for application
 - [ ] Enable Docker support
 - [ ] Setup AMQP
