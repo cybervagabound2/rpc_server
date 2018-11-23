@@ -1,6 +1,7 @@
 package main_test
 
 import (
+	"bytes"
 	"crypto/rand"
 	"encoding/json"
 	"fmt"
@@ -130,7 +131,34 @@ func genUuid() string {
 	return uuid
 }
 
+// Update user
+func TestUpdateUser(t *testing.T) {
+	clearTable()
+	addUsers(1)
 
+	req, _ := http.NewRequest("GET", "/user/1", nil)
+	response := executeRequest(req)
+	var originalUser map[string]interface{}
+	json.Unmarshal(response.Body.Bytes(), &originalUser)
+
+	userload := []byte(`{"username":"test username - updated name`)
+
+	req, _ = http.NewRequest("PUT", "/user/1", bytes.NewBuffer(userload))
+	response = executeRequest(req)
+
+	checkResponseCode(t, http.StatusOK, response.Code)
+
+	var m map[string]interface{}
+	json.Unmarshal(response.Body.Bytes(), &m)
+
+	if m["uuid"] != originalUser["uuid"] {
+		t.Errorf("Expected the uuid to remain the same (%v). Got %v", originalUser["uuid"], m["uuid"])
+	}
+
+	if m["username"] != originalUser["username"] {
+		t.Errorf("Expected the username to change from '%v' to '%v'. Got '%v'", originalUser["username"], m["username"], m["username"])
+	}
+}
 
 
 
