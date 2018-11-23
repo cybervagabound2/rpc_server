@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"fmt"
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
 )
