@@ -32,6 +32,19 @@ func TestMain(m *testing.M) {
 	os.Exit(code)
 }
 
+func TestEmptyTable(t *testing.T) {
+	clearTable()
+
+	req, _ := http.NewRequest("GET", "/users", nil)
+	response := executeRequest(req)
+
+	checkResponseCode(t, http.StatusOK, response.Code)
+
+	if body := response.Body.String(); body != "[]" {
+		t.Errorf("Expected an empty array. Got %s", body)
+	}
+}
+
 func ensureTableExists() {
 	if _, err := a.DB.Exec(tableCreationQuery); err != nil {
 		log.Fatal(err)
@@ -45,24 +58,12 @@ func clearTable() {
 
 const tableCreationQuery = `CREATE TABLE IF NOT EXISTS users_test
 (
+id SERIAL,
 uuid VARCHAR(36),
 username TEXT NOT NULL,
 registered TIMESTAMP NOT NULL DEFAULT NOW(),
-CONSTRAINT users_pkey PRIMARY KEY (id)
+CONSTRAINT users_test_pkey PRIMARY KEY (id)
 )`
-
-func TestEmptyTable(t *testing.T) {
-	clearTable()
-
-	req, _ := http.NewRequest("GET", "/users", nil)
-	response := executeRequest(req)
-
-	checkResponseCode(t, http.StatusOK, response.Code)
-
-	if body := response.Body.String(); body != "[]" {
-		t.Errorf("Expected an empty array. Got %s", body)
-	}
-}
 
 
 func executeRequest(req *http.Request) *httptest.ResponseRecorder {
@@ -176,7 +177,7 @@ func TestDeleteUser(t *testing.T) {
 
 	req, _ = http.NewRequest("GET", "/user/1", nil)
 	response = executeRequest(req)
-	checkResponseCode(t, http.StatusOK, response.Code)
+	checkResponseCode(t, http.StatusNotFound, response.Code)
 }
 
 

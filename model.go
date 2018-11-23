@@ -33,6 +33,7 @@ func (u *user) deleteUser(db *sql.DB) error {
 	return err
 }
 
+// need to edit this, UUID must be auto generated.
 func (u *user) createUser(db *sql.DB) error {
 	err := db.QueryRow(
 		"INSERT INTO users(uuid, username, registered) VALUES($1, $2, $3) RETURNING id",
