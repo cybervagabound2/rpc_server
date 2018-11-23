@@ -59,6 +59,7 @@ func (a *App) getUser(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
+
 	respondWithJSON(w, http.StatusOK, u)
 }
 

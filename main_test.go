@@ -10,7 +10,6 @@ import (
 	"net/http/httptest"
 	"os"
 	"rpc_server"
-	"strconv"
 	"testing"
 )
 
@@ -143,8 +142,8 @@ func ensureTableExists() {
 }
 
 func clearTable() {
-	a.DB.Exec("DELETE FROM users_test")
-	a.DB.Exec("ALTER SEQUENCE users_pkey_id_seq RESTART WITH 1")
+	a.DB.Exec("DELETE FROM users")
+	a.DB.Exec("ALTER SEQUENCE users_id_seq RESTART WITH 1")
 }
 
 func addUsers(count int) {
@@ -153,7 +152,8 @@ func addUsers(count int) {
 	}
 
 	for i := 0; i < count; i++  {
-		a.DB.Exec("INSERT INTO users_test(uuid, username) VALUES($1, $2)", genUuid(), "user"+strconv.Itoa(i), (i+1) * 10)
+		a.DB.Exec("INSERT INTO users(uuid, username) VALUES($1, $2)", genUuid(),"User")
+		//a.DB.Exec("INSERT INTO users_test(username, price) VALUES($1, $2)", "Product "+strconv.Itoa(i), (i+1.0)*10)
 	}
 }
 
@@ -163,7 +163,7 @@ id SERIAL,
 uuid VARCHAR(36),
 username TEXT NOT NULL,
 registered TIMESTAMP NOT NULL DEFAULT NOW(),
-CONSTRAINT users_test_pkey PRIMARY KEY (id)
+CONSTRAINT users_pkey PRIMARY KEY (id)
 )`
 
 // function to generate uuid for user

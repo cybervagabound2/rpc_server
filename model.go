@@ -9,7 +9,7 @@ import (
 
 type user struct {
 	ID    	    int    `json:"id"`
-	UUID        int	   `json:"uuid"`
+	UUID        string `json:"uuid"`
 	Username    string `json:"username"`
 	Registered  string `json:"registered"`
 }
