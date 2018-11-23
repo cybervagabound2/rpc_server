@@ -36,8 +36,8 @@ func (u *user) deleteUser(db *sql.DB) error {
 // need to edit this, UUID must be auto generated.
 func (u *user) createUser(db *sql.DB) error {
 	err := db.QueryRow(
-		"INSERT INTO users(uuid, username, registered) VALUES($1, $2, $3) RETURNING id",
-		u.UUID, u.Username, u.Registered).Scan(&u.ID)
+		"INSERT INTO users(uuid, username) VALUES($1, $2) RETURNING id",
+		genUuid(), u.Username).Scan(&u.ID)
 
 	if err != nil {
 		return err
@@ -70,8 +70,7 @@ func getUsers(db *sql.DB, start, count int) ([]user, error) {
 	return users, nil
 }
 
-// function to generate uuid for user
-func (u *user) genUuid(db *sql.DB) string {
+func genUuid() string {
 	b := make([]byte, 16)
 	_, err := rand.Read(b)
 	if err != nil {

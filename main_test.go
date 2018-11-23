@@ -59,9 +59,26 @@ func TestGetNonExistentUser(t *testing.T) {
 	}
 }
 
-// Not implemented yet
 func TestCreateUser(t *testing.T) {
 	clearTable()
+
+	payload := []byte(`{"username":"test username"}`)
+
+	req, _ := http.NewRequest("POST", "/user", bytes.NewBuffer(payload))
+	response := executeRequest(req)
+
+	checkResponseCode(t, http.StatusCreated, response.Code)
+
+	var m map[string]interface{}
+	json.Unmarshal(response.Body.Bytes(), &m)
+
+	if m["username"] != "test username" {
+		t.Errorf("Expected username to be 'test username'. Got '%v'", m["username"])
+	}
+
+	if m["id"] != 1.0 {
+		t.Errorf("Expected user ID to be '1'. Got '%v'", m["id"])
+	}
 }
 
 func TestGetUser(t *testing.T) {
@@ -152,7 +169,7 @@ func addUsers(count int) {
 	}
 
 	for i := 0; i < count; i++  {
-		a.DB.Exec("INSERT INTO users(uuid, username) VALUES($1, $2)", genUuid(),"User")
+		a.DB.Exec("INSERT INTO users(uuid, username) VALUES($1, $2)", GenUuid(),"User")
 		//a.DB.Exec("INSERT INTO users_test(username, price) VALUES($1, $2)", "Product "+strconv.Itoa(i), (i+1.0)*10)
 	}
 }
@@ -166,8 +183,8 @@ registered TIMESTAMP NOT NULL DEFAULT NOW(),
 CONSTRAINT users_pkey PRIMARY KEY (id)
 )`
 
-// function to generate uuid for user
-func genUuid() string {
+// Try to import this function from package model
+func GenUuid() string {
 	b := make([]byte, 16)
 	_, err := rand.Read(b)
 	if err != nil {
