@@ -30,7 +30,7 @@ This is my test exercise to get offer from awesome tech company.
 `./rpc_server`
 
 **Application info:**
-- `go test -v` results: https://asciinema.org/a/ZEnlh1Uria3jKyoLOzIGm6rP7
+- `go test -v` results: https://asciinema.org/a/ibMzb02oVDVTKV4gzXuuHSq1m
 - API check: link to asciinema
 
 or you can tesh it yourself at: http://ip:8000
