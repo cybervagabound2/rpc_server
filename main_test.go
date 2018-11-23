@@ -160,6 +160,57 @@ func TestUpdateUser(t *testing.T) {
 	}
 }
 
+// Delete user
+func TestDeleteUser(t *testing.T) {
+	clearTable()
+	addUsers(1)
+
+	req, _ := http.NewRequest("GET", "/user/1", nil)
+	response := executeRequest(req)
+	checkResponseCode(t, http.StatusOK, response.Code)
+
+	req, _ = http.NewRequest("DELETE", "/user/1", nil)
+	response = executeRequest(req)
+
+	checkResponseCode(t, http.StatusOK, response.Code)
+
+	req, _ = http.NewRequest("GET", "/user/1", nil)
+	response = executeRequest(req)
+	checkResponseCode(t, http.StatusOK, response.Code)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
