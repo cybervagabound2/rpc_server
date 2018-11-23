@@ -102,3 +102,29 @@ func (a *App) createUser(w http.ResponseWriter, r *http.Request) {
 
 	respondWithJSON(w, http.StatusCreated, u)
 }
+
+// Update user
+func (a *App) updateUser(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid user ID")
+		return
+	}
+
+	var u user
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&u); err !=nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid request userload")
+		return
+	}
+	defer r.Body.Close()
+	u.ID = id
+
+	if err := u.updateUser(a.DB); err != nil {
+		respondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	respondWithJSON(w, http.StatusOK, u)
+}
