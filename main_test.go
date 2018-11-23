@@ -9,7 +9,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
-	"rpc_server"
 	"testing"
 )
 
@@ -81,6 +80,7 @@ func TestCreateUser(t *testing.T) {
 	}
 }
 
+// Get user
 func TestGetUser(t *testing.T) {
 	clearTable()
 	addUsers(1)
@@ -168,9 +168,8 @@ func addUsers(count int) {
 		count = 1
 	}
 
-	for i := 0; i < count; i++  {
-		a.DB.Exec("INSERT INTO users(uuid, username) VALUES($1, $2)", GenUuid(),"User")
-		//a.DB.Exec("INSERT INTO users_test(username, price) VALUES($1, $2)", "Product "+strconv.Itoa(i), (i+1.0)*10)
+	for i := 0; i < count; i++ {
+		a.DB.Exec("INSERT INTO users(uuid, username) VALUES($1, $2)", GenUuid(), "User")
 	}
 }
 
@@ -183,7 +182,7 @@ registered TIMESTAMP NOT NULL DEFAULT NOW(),
 CONSTRAINT users_pkey PRIMARY KEY (id)
 )`
 
-// Try to import this function from package model
+// TODO: Try to import this function from package model
 func GenUuid() string {
 	b := make([]byte, 16)
 	_, err := rand.Read(b)
