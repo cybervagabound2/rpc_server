@@ -4,8 +4,7 @@ import (
 	"log"
 	"os"
 	"testing"
-
-	"."
+	"rpc_server"
 )
 
 var a main.App
