@@ -67,8 +67,8 @@ func respondWithError(w http.ResponseWriter, code int, message string) {
 	respondWithJSON(w, code, map[string]string{"error": message})
 }
 
-func respondWithJSON(w http.ResponseWriter, code int, userload interface{}) {
-	response, _ := json.Marshal(userload)
+func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
+	response, _ := json.Marshal(payload)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
@@ -101,7 +101,7 @@ func (a *App) createUser(w http.ResponseWriter, r *http.Request) {
 	var u user
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&u); err != nil {
-		respondWithError(w, http.StatusBadRequest, "Invalid request userload")
+		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return
 	}
 	defer r.Body.Close()
@@ -125,8 +125,8 @@ func (a *App) updateUser(w http.ResponseWriter, r *http.Request) {
 
 	var u user
 	decoder := json.NewDecoder(r.Body)
-	if err := decoder.Decode(&u); err !=nil {
-		respondWithError(w, http.StatusBadRequest, "Invalid request userload")
+	if err := decoder.Decode(&u); err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return
 	}
 	defer r.Body.Close()

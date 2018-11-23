@@ -84,9 +84,9 @@ func TestUpdateUser(t *testing.T) {
 	var originalUser map[string]interface{}
 	json.Unmarshal(response.Body.Bytes(), &originalUser)
 
-	userload := []byte(`{"username":"test username - updated name`)
+	payload := []byte(`{"username":"test username - updated name"}`)
 
-	req, _ = http.NewRequest("PUT", "/user/1", bytes.NewBuffer(userload))
+	req, _ = http.NewRequest("PUT", "/user/1", bytes.NewBuffer(payload))
 	response = executeRequest(req)
 
 	checkResponseCode(t, http.StatusOK, response.Code)
@@ -94,11 +94,11 @@ func TestUpdateUser(t *testing.T) {
 	var m map[string]interface{}
 	json.Unmarshal(response.Body.Bytes(), &m)
 
-	if m["uuid"] != originalUser["uuid"] {
-		t.Errorf("Expected the uuid to remain the same (%v). Got %v", originalUser["uuid"], m["uuid"])
+	if m["id"] != originalUser["id"] {
+		t.Errorf("Expected the id to remain the same (%v). Got %v", originalUser["id"], m["id"])
 	}
 
-	if m["username"] != originalUser["username"] {
+	if m["username"] == originalUser["username"] {
 		t.Errorf("Expected the username to change from '%v' to '%v'. Got '%v'", originalUser["username"], m["username"], m["username"])
 	}
 }
