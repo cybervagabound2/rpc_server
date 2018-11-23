@@ -4,7 +4,6 @@ import (
 	"crypto/rand"
 	"database/sql"
 	"fmt"
-	"github.com/pkg/errors"
 	"log"
 )
 
@@ -47,7 +46,27 @@ func (u *user) createUser(db *sql.DB) error {
 }
 
 func getUsers(db *sql.DB, start, count int) ([]user, error) {
-	return nil, errors.New("Not implemented")
+	rows, err := db.Query(
+		"SELECT id, uuid, username, registered FROM users LIMIT $1 OFFSET $2",
+		count, start)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	users := []user{}
+
+	for rows.Next() {
+		var u user
+		if err := rows.Scan(&u.ID, &u.UUID, &u.Username, &u.Registered); err != nil {
+			return nil, err
+		}
+		users = append(users, u)
+	}
+
+	return users, nil
 }
 
 // function to generate uuid for user
