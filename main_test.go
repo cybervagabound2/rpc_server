@@ -32,6 +32,11 @@ func ensureTableExists() {
 	}
 }
 
+func clearTable() {
+	a.DB.Exec("DELETE FROM users_test")
+	a.DB.Exec("ALTER SEQUENCE users_pkey_id_seq RESTART WITH 1")
+}
+
 const tableCreationQuery = `CREATE TABLE IF NOT EXISTS users_test
 (
 uuid VARCHAR(36),
@@ -39,8 +44,3 @@ username TEXT NOT NULL,
 registered TIMESTAMP NOT NULL DEFAULT NOW(),
 CONSTRAINT users_pkey PRIMARY KEY (id)
 )`
-
-func clearTable() {
-	a.DB.Exec("DELETE FROM users_test")
-	a.DB.Exec("ALTER SEQUENCE users_pkey_id_seq RESTART WITH 1")
-}
