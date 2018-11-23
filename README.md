@@ -10,7 +10,7 @@ This is my test exercise to get offer from awesome tech company.
 - Fetch a user in response to a valid GET request at /user/{id}
 - Fetch a list of users in response to a valid GET request at /users
 
-**Installation instructions**
+**Installation instructions:**
 - install [PostgreSQL](https://www.postgresql.org/download/)
 - clone repository: `git clone https://github.com/cybervagabound2/rpc_server`
 - install all necessary dependencies:
@@ -28,3 +28,9 @@ This is my test exercise to get offer from awesome tech company.
 `go build`
 - run application:
 `./rpc_server`
+
+**Application info:**
+- `go test -v` results: link to asciinema
+- API check: link to asciinema
+
+or you can tesh it yourself at: http://ip:8000
