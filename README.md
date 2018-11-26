@@ -37,9 +37,10 @@ This is my test exercise to get offer from awesome tech company.
 - [x] Make tests passed
 - [x] Test REST API working
 - [x] Write comments for code 
-- [ ] Setup CI
 - [x] To issue repository
-- [ ] Host application on remote server
 - [x] Make screencasts for application
-- [ ] Enable Docker support
 - [ ] Setup AMQP
+- [ ] Try any cryptoexchange API
+- [ ] Setup CI
+- [ ] Host application on remote server
+- [ ] Enable Docker support
